@@ -28,22 +28,34 @@ import {
 } from "recharts";
 
 const MonitorDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"stats" | "assignments" | "create" | "submissions">("stats");
+  const [activeTab, setActiveTab] = useState<
+    "stats" | "assignments" | "create" | "submissions"
+  >("stats");
+
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
 
-  const [formData, setFormData] = useState({ title: "", description: "", deadline: "" });
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    deadline: "",
+  });
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const [showDeleteSubmissionModal, setShowDeleteSubmissionModal] = useState(false);
-  const [deleteSubmissionId, setDeleteSubmissionId] = useState<string | null>(null);
+  const [showDeleteSubmissionModal, setShowDeleteSubmissionModal] =
+    useState(false);
+  const [deleteSubmissionId, setDeleteSubmissionId] = useState<string | null>(
+    null
+  );
 
   const minDeadline = new Date().toISOString().slice(0, 16);
 
@@ -121,7 +133,9 @@ const MonitorDashboard: React.FC = () => {
     setFormData({
       title: assignment.title ?? "",
       description: assignment.description ?? "",
-      deadline: assignment.deadline ? new Date(assignment.deadline).toISOString().slice(0, 16) : "",
+      deadline: assignment.deadline
+        ? new Date(assignment.deadline).toISOString().slice(0, 16)
+        : "",
     });
     setEditingId(assignment._id);
     setActiveTab("create");
@@ -165,7 +179,11 @@ const MonitorDashboard: React.FC = () => {
   const tabs = [
     { id: "stats" as const, label: "Overview", icon: FileText },
     { id: "assignments" as const, label: "Assignments", icon: FileText },
-    { id: "create" as const, label: editingId ? "Edit Assignment" : "Create Assignment", icon: Plus },
+    {
+      id: "create" as const,
+      label: editingId ? "Edit Assignment" : "Create Assignment",
+      icon: Plus,
+    },
     { id: "submissions" as const, label: "Submissions", icon: Users },
   ];
 
@@ -173,11 +191,17 @@ const MonitorDashboard: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
             Monitor Dashboard
           </h1>
-          <p className="text-gray-600">Manage assignments and track submissions</p>
+          <p className="text-gray-600">
+            Manage assignments and track submissions
+          </p>
         </motion.div>
 
         {/* Tabs */}
@@ -188,7 +212,9 @@ const MonitorDashboard: React.FC = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 ${
-                  activeTab === tab.id ? "bg-white shadow-md text-purple-600" : "text-gray-600 hover:text-gray-900"
+                  activeTab === tab.id
+                    ? "bg-white shadow-md text-purple-600"
+                    : "text-gray-600 hover:text-gray-900"
                 }`}
               >
                 <tab.icon className="h-5 w-5" />
@@ -199,8 +225,11 @@ const MonitorDashboard: React.FC = () => {
         </div>
 
         {/* TAB CONTENT */}
-        <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           {/* STATS */}
           {activeTab === "stats" && stats && (
             <ResponsiveContainer width="100%" height={300}>
@@ -236,16 +265,27 @@ const MonitorDashboard: React.FC = () => {
 
                   <div className="flex items-center space-x-4 mt-3 text-sm text-gray-500">
                     <span className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" /> <span>Deadline: {new Date(a.deadline).toLocaleDateString()}</span>
+                      <Clock className="h-4 w-4" />{" "}
+                      <span>
+                        Deadline:{" "}
+                        {new Date(a.deadline).toLocaleDateString()}
+                      </span>
                     </span>
 
                     <span className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" /> <span>Created: {new Date(a.createdAt).toLocaleDateString()}</span>
+                      <Calendar className="h-4 w-4" />{" "}
+                      <span>
+                        Created:{" "}
+                        {new Date(a.createdAt).toLocaleDateString()}
+                      </span>
                     </span>
                   </div>
 
                   <div className="flex space-x-2 mt-4">
-                    <button onClick={() => handleEdit(a)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
+                    <button
+                      onClick={() => handleEdit(a)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                    >
                       <Edit className="h-5 w-5" />
                     </button>
 
@@ -278,7 +318,9 @@ const MonitorDashboard: React.FC = () => {
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     className="w-full px-4 py-3 border rounded-xl"
                   />
                 </div>
@@ -289,7 +331,9 @@ const MonitorDashboard: React.FC = () => {
                     required
                     rows={4}
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
                     className="w-full px-4 py-3 border rounded-xl"
                   />
                 </div>
@@ -301,20 +345,30 @@ const MonitorDashboard: React.FC = () => {
                     required
                     min={minDeadline}
                     value={formData.deadline}
-                    onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, deadline: e.target.value })
+                    }
                     className="w-full px-4 py-3 border rounded-xl"
                   />
                 </div>
 
                 <div className="flex space-x-4">
-                  <button type="submit" className="flex-1 py-3 bg-purple-600 text-white rounded-xl">
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 bg-purple-600 text-white rounded-xl"
+                  >
                     {editingId ? "Update" : "Create"}
                   </button>
+
                   <button
                     type="button"
                     onClick={() => {
                       setEditingId(null);
-                      setFormData({ title: "", description: "", deadline: "" });
+                      setFormData({
+                        title: "",
+                        description: "",
+                        deadline: "",
+                      });
                       setActiveTab("assignments");
                     }}
                     className="px-6 py-3 bg-gray-300 rounded-xl"
@@ -329,6 +383,22 @@ const MonitorDashboard: React.FC = () => {
           {/* SUBMISSIONS */}
           {activeTab === "submissions" && (
             <div className="space-y-4">
+
+              {/* 🔥 DOWNLOAD ALL BUTTON */}
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() =>
+                    window.open(
+                      `https://console.cloudinary.com/console/media_library/folders/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/assignments`,
+                      "_blank"
+                    )
+                  }
+                  className="px-5 py-3 bg-purple-600 text-white rounded-xl shadow hover:bg-purple-700"
+                >
+                  Download All
+                </button>
+              </div>
+
               {submissionsLoading ? (
                 <LoadingSpinner />
               ) : submissions.length === 0 ? (
@@ -341,18 +411,37 @@ const MonitorDashboard: React.FC = () => {
                   >
                     <div>
                       <h3 className="font-semibold">{s.studentId?.name}</h3>
-                      <p className="text-gray-600">Assignment: {s.assignmentId?.title}</p>
-                      <p className="text-sm text-gray-500">Uploaded: {new Date(s.uploadedAt).toLocaleString()}</p>
+                      <p className="text-gray-600">
+                        Assignment: {s.assignmentId?.title}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Uploaded:{" "}
+                        {new Date(s.uploadedAt).toLocaleString()}
+                      </p>
                     </div>
-                    <button
-                      onClick={() => {
-                        setDeleteSubmissionId(s._id);
-                        setShowDeleteSubmissionModal(true);
-                      }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </button>
+
+                    <div className="flex space-x-3">
+
+                      {/* 🔥 PREVIEW BUTTON */}
+                      <button
+                        onClick={() => window.open(s.cloudinaryUrl, "_blank")}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                        title="Preview PDF"
+                      >
+                        <FileText className="h-5 w-5" />
+                      </button>
+
+                      {/* DELETE */}
+                      <button
+                        onClick={() => {
+                          setDeleteSubmissionId(s._id);
+                          setShowDeleteSubmissionModal(true);
+                        }}
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                 ))
               )}
@@ -363,10 +452,22 @@ const MonitorDashboard: React.FC = () => {
           {showDeleteModal && (
             <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-xl shadow">
-                <h2 className="text-xl font-bold mb-4">Delete assignment?</h2>
+                <h2 className="text-xl font-bold mb-4">
+                  Delete assignment?
+                </h2>
                 <div className="flex space-x-4">
-                  <button onClick={handleDelete} className="px-6 py-3 bg-red-600 text-white rounded-xl">Yes, Delete</button>
-                  <button onClick={() => setShowDeleteModal(false)} className="px-6 py-3 bg-gray-300 rounded-xl">Cancel</button>
+                  <button
+                    onClick={handleDelete}
+                    className="px-6 py-3 bg-red-600 text-white rounded-xl"
+                  >
+                    Yes, Delete
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className="px-6 py-3 bg-gray-300 rounded-xl"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -376,15 +477,26 @@ const MonitorDashboard: React.FC = () => {
           {showDeleteSubmissionModal && (
             <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-xl shadow">
-                <h2 className="text-xl font-bold mb-4">Delete this submission?</h2>
+                <h2 className="text-xl font-bold mb-4">
+                  Delete this submission?
+                </h2>
                 <div className="flex space-x-4">
-                  <button onClick={handleDeleteSubmission} className="px-6 py-3 bg-red-600 text-white rounded-xl">Yes, Delete</button>
-                  <button onClick={() => setShowDeleteSubmissionModal(false)} className="px-6 py-3 bg-gray-300 rounded-xl">Cancel</button>
+                  <button
+                    onClick={handleDeleteSubmission}
+                    className="px-6 py-3 bg-red-600 text-white rounded-xl"
+                  >
+                    Yes, Delete
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteSubmissionModal(false)}
+                    className="px-6 py-3 bg-gray-300 rounded-xl"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
           )}
-
         </motion.div>
       </div>
     </div>
