@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogOut, User, BookOpen } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar: React.FC = () => {
@@ -29,44 +29,71 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="bg-white/90 backdrop-blur-md shadow-lg border-b border-purple-100 sticky top-0 z-50"
+      initial={{ y: -60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="fixed w-full top-0 z-50 backdrop-blur-xl bg-white/30 border-b border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.05)]"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <BookOpen className="h-8 w-8 text-purple-600" />
-            <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              ASSIGNPRO
-            </span>
-          </Link>
+      <div className="max-w-7xl mx-auto px-6 py-4 relative flex items-center justify-center">
 
-          {/* User Menu */}
+        {/* Center logo */}
+        <Link
+          to="/"
+          className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 group"
+        >
+          <img
+            src="/assets/logo.png"
+            alt="AssignPro Logo"
+            className="w-16 h-auto drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
+          />
+        </Link>
+
+        {/* Right side */}
+        <div className="ml-auto flex items-center gap-6">
+
+          {/* Not logged in */}
+          {!user && (
+            <>
+              <Link
+                to="/login"
+                className="text-gray-700 hover:text-indigo-600 font-medium transition-colors"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="px-5 py-2 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 hover:shadow-lg transition-all duration-300"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+
+          {/* Logged in */}
           {user && (
-            <div className="flex items-center space-x-4">
+            <>
               <Link
                 to={getDashboardPath()}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-purple-50 transition-colors duration-200"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/60 hover:bg-white/90 border border-white/50 backdrop-blur-sm transition-all shadow-sm"
               >
-                <User className="h-4 w-4 text-purple-600" />
-                <span className="text-gray-700 font-medium">{user.name}</span>
-                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full uppercase">
+                <User className="h-4 w-4 text-purple-700" />
+                <span className="text-gray-800 font-medium">{user.name}</span>
+                <span className="text-xs bg-purple-200 text-purple-700 px-2 py-0.5 rounded-full uppercase">
                   {user.role}
                 </span>
               </Link>
-              
+
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.07 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-xl shadow hover:bg-red-600 transition-all"
               >
                 <LogOut className="h-4 w-4" />
-                <span>Logout</span>
+                Logout
               </motion.button>
-            </div>
+            </>
           )}
         </div>
       </div>
