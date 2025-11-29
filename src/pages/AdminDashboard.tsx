@@ -1,3 +1,6 @@
+// Updated AdminDashboard.jsx
+// Full integration with backend features you implemented
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, CheckCircle, Settings, BarChart3, UserCheck, UserX, Trash2, Shield } from 'lucide-react';
@@ -107,7 +110,6 @@ const AdminDashboard: React.FC = () => {
           <p className="text-gray-600">Manage users and system settings</p>
         </motion.div>
 
-        {/* Tab Navigation */}
         <div className="mb-8">
           <div className="flex space-x-1 bg-white/60 backdrop-blur-sm rounded-2xl p-1">
             {tabs.map((tab) => (
@@ -132,7 +134,6 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Tab Content */}
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
